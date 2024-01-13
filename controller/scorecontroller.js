@@ -1,6 +1,14 @@
 import Scores from '../Model/scoreModel.js'
 
 let scoresArr = []
+const init = async () => {    
+    try{
+        const data = await Scores.find({})
+        const update = data[0].highScores  
+        scoresArr = [...update] 
+    }catch(error){console.log(error.message)}
+}
+init()
 //function to sort the scoresArr for saving
 const sortArr = (arr) => {
     let copyArr = [...arr]
@@ -62,6 +70,6 @@ export const newHighScore = async (req, res) => {
         scoresArr = [...sorted]
         await new Scores({highScores: [...scoresArr]}).save()
         const currentScores = await Scores.find({})
-        res.send(currentScores)
+        await res.send(currentScores)
     }catch(error){error.message}
 }
