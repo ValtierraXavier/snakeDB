@@ -1,10 +1,11 @@
 import Scores from '../Model/scoreModel.js'
 
 let scoresArr = []
+//sets the scoresArr to whats currently stored in the Database. for persistency.
 const init = async () => {    
     try{
         const data = await Scores.find({})
-        const update = data[0].highScores  
+        const update = !data[0]? [] :data[0].highScores  
         scoresArr = [...update] 
     }catch(error){console.log(error.message)}
 }
@@ -45,7 +46,9 @@ export const getHighestScore = async (req, res) => {
     let scores = await Scores.find({})
     let highScoreArr = []
     if(scores?.length == 0){
-       res.send("No highscores have been set...yet. You can be the first!")
+       res.send([
+        {name: 'PlaceHolder', score: 0}
+    ])
     }else{
         let currentHighscore = arrCopy[0]
         for(let i = 0; i < arrCopy.length; i++){
