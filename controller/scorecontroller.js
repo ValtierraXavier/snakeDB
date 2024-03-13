@@ -5,7 +5,8 @@ let scoresArr = []
 const init = async () => {    
     try{
         const data = await Scores.find({})
-        const update = !data[0]? [] :data[0].highScores  
+        // const update = data[0]?.highScores  
+        const update = !data[0]? [{name:'PlaceHolder', score: 0}] : data[0].highScores  
         scoresArr = [...update] 
     }catch(error){console.log(error.message)}
 }
@@ -32,7 +33,7 @@ const sortArr = (arr) => {
     return(sortedArr)
 }
 
-//gets all 10 current highscores
+//gets all 5 current highscores
 export const getScores = async (req, res) => {
     try{
         let scores = await Scores.find({})
@@ -63,16 +64,23 @@ export const getHighestScore = async (req, res) => {
 }
 export const newHighScore = async (req, res) => {
     const body = req.body
-    try{
-        scoresArr.unshift(body)
-        if(scoresArr.length > 10){
-            scoresArr.pop()
-        }
-        await Scores.deleteMany({})
-        const sorted = sortArr(scoresArr)
-        scoresArr = [...sorted]
-        await new Scores({highScores: [...scoresArr]}).save()
-        const currentScores = await Scores.find({})
-        await res.send(currentScores)
-    }catch(error){error.message}
+    if(scoresArr.length == 1 && scoresArr[0].name == "PlaceHolder"){
+        scoresArr.pop()
+    }else{
+        try{
+            scoresArr.unshift(body)
+            if(scoresArr.length > 5){
+                scoresArr.pop()
+            }
+            await Scores.deleteMany({})
+            const sorted = sortArr(scoresArr)
+            scoresArr = [...sorted]
+            await new Scores({highScores: [...scoresArr]}).save()
+            const currentScores = await Scores.find({})
+            await res.send(currentScores)
+        }catch(error){error.message}
+    }
 }
+
+//next step finish title screen
+//add view for mobile sized screens. Highscore sits at the top and drops down with a click/touch.
