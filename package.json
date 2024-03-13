@@ -5,5 +5,5 @@
     "express": "^4.18.2",
     "mongoose": "^8.0.4"
   },
-  "scripts": {"start": "node ./connection/Server.js"}
+  "scripts": {"start": "node ./Connection/Server.js"}
 }
