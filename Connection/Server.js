@@ -4,7 +4,7 @@ import cors from 'cors'
 import Routes from '../Router/index.js'
 
 const app = express()
-const port = 3020
+const port = process.env.PORT || 3020
 app.use(express.json())
 app.use(cors())
 app.use('/', Routes)

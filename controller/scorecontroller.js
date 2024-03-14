@@ -5,7 +5,6 @@ let scoresArr = []
 const init = async () => {    
     try{
         const data = await Scores.find({})
-        // const update = data[0]?.highScores  
         const update = !data[0]? [{name:'PlaceHolder', score: 0}] : data[0].highScores  
         scoresArr = [...update] 
     }catch(error){console.log(error.message)}

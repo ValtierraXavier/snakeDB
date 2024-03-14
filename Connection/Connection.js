@@ -7,7 +7,8 @@ const connectConfig = {
 
 mongoose.set('strictQuery', false)
 
-const url = process.env.MONGO_URL
+const url =  process.env.MONGO_URL || 'mongodb://localhost:27017/SnakeDB'
+// const url ='mongodb://localhost:27017/SnakeDB'
 
 mongoose.connect(url, connectConfig)
 
